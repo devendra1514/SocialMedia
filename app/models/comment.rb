@@ -14,6 +14,9 @@ class Comment < ApplicationRecord
   # Callbacks
   before_validation :check_and_set_level
 
+  # Scopes
+  # default_scope { order(:created) }
+
   private
 
   def check_and_set_level

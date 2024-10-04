@@ -4,7 +4,7 @@ module Api::V1
     before_action :set_user, only: %i[login_with_password login_with_otp]
 
     def login_with_password
-      return render json: { error: 'Account is not verified, login with otp to verified' }, status: :bad_request unless @user.verified
+      return render json: { error: ACCOUNT_VERIFICATION_WARNING }, status: :bad_request unless @user.verified
       if @user.authenticate(params[:password])
         render json: { token: JsonWebToken.encode(id: @user.id) }
       else

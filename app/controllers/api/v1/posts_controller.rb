@@ -1,6 +1,5 @@
 module Api::V1
   class PostsController < Api::AppController
-    include PostsConcern
     authorize_resource
     before_action :set_post, only: %i[show update destroy]
 

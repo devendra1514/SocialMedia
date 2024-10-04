@@ -1,7 +1,14 @@
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   get "up" => "rails/health#show", as: :rails_health_check
+
+  authenticate :admin_user do
+    mount Sidekiq::Web => "/sidekiq"
+  end
 
   root to: "api/homes#index"
 

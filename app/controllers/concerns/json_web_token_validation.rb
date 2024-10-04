@@ -12,11 +12,11 @@ module JsonWebTokenValidation
     @current_user = User.find(@id)
     render json: { error: 'Account is not verified, login with otp to verified' } unless @current_user.verified
   rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Account is deleted' }
+    render json: { error: 'Account is deleted' }, status: :bad_request
   rescue JWT::ExpiredSignature
-    render json: { error: 'Session expired' }
+    render json: { error: 'Session expired' }, status: :unauthorized
   rescue JWT::DecodeError => e
-    render json: { error: 'Something went wrong' }
+    render json: { error: 'Something went wrong' }, status: :bad_request
   end
 
   def current_user

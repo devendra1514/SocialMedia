@@ -18,4 +18,6 @@ class Post < ApplicationRecord
   scope :user_posts, -> (user) {
     user.posts
   }
+
+  default_scope -> { order(:created_at) }
 end

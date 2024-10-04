@@ -1,0 +1,3 @@
+unverified_account_delete_jon:
+  cron: "*/15 * * * *" # At every 15th minute
+  class: "UnverifiedAccountDeleteJob"
