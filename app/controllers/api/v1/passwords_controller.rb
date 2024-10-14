@@ -11,7 +11,7 @@ module Api::V1
         user = otp_validate_service.user
         if user.update(password: params[:password], password_confirmation: params[:password_confirmation])
           otp_validate_service.otp.update(used: true)
-          render json: { message: 'Password update successfully' }
+          render json: { message: I18n.t('password.update_success') }
         else
           render json: { error: otp_validate_service.user.errors }, status: :unprocessable_entity
         end

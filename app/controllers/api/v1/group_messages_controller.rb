@@ -39,12 +39,12 @@ module Api::V1
 
     def set_group
       @group = Group.find_by(group_id: params[:group_id])
-      return render_not_found('Group not found') unless @group
+      return render_not_found(I18n.t('group.not_found')) unless @group
     end
 
     def set_group_message
       @group_message = GroupMessage.find_by(group_message_id: params[:id])
-      return render_not_found('Message not found') unless @group_message
+      return render_not_found(I18n.t('message.not_found')) unless @group_message
       authorize! action_name.to_sym, @group_message
     end
   end

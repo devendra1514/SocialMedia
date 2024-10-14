@@ -11,7 +11,7 @@ module Api::V1
       group_member = @group.group_memberships.new(group_member_params)
       authorize! action_name.to_sym, group_member
       if group_member.save
-        render json: { message: 'Added' }
+        render json: { message: I18n.t('added') }
       else
         render_unprocessable_entity(group_member.errors)
       end
@@ -20,7 +20,7 @@ module Api::V1
     def destroy
       authorize! action_name.to_sym, @group_member
       @group_member.destroy
-      render json: { message: 'Removed' }
+      render json: { message: I18n.t('removed') }
     end
 
     private
@@ -31,7 +31,7 @@ module Api::V1
 
     def set_group
       @group = Group.find_by(group_id: params[:group_id])
-      render_not_found('Group not found') unless @group
+      render_not_found(I18n.t('group.not_found')) unless @group
     end
 
     def set_group_member

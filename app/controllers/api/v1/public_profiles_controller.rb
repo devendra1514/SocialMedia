@@ -38,7 +38,7 @@ module Api::V1
 
     def set_user
       @user = User.find_by(user_id: params[:id])
-      return render json: { error: 'Account not found' } unless @user.present?
+      return render json: { error: I18n.t('user.not_found') } unless @user.present?
     end
   end
 end

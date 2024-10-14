@@ -18,7 +18,7 @@ module Api::V1
 
     def set_following
       @followed_user = User.find_by(user_id: params[:followed_id])
-      render_not_found('Account not found') unless @followed_user
+      render_not_found(I18n.t('user.not_found')) unless @followed_user
     end
   end
 end

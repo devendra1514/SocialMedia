@@ -38,10 +38,10 @@ module Api::V1
       case params[:resource_type]
       when 'Post'
         @parent_resource = Post.find_by(post_id: params[:resource_id])
-        render_not_found('Post not found') unless @parent_resource.present?
+        render_not_found(I18n.t('post.not_found')) unless @parent_resource.present?
       when 'Comment'
         @parent_resource = Comment.find_by(comment_id: params[:resource_id])
-        render_not_found('Comment not found') unless @parent_resource.present?
+        render_not_found(I18n.t('comment.not_found')) unless @parent_resource.present?
       else
         render json: { error: 'params is missing or invalid' }, status: :bad_request
       end
@@ -49,7 +49,7 @@ module Api::V1
 
     def set_comment
       @comment = Comment.find_by(comment_id: params[:id])
-      return render_not_found('Comment not found') unless @comment.present?
+      return render_not_found(I18n.t('comment.not_found')) unless @comment.present?
       authorize! action_name.to_sym, @comment
     end
   end

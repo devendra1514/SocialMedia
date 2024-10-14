@@ -31,3 +31,31 @@ en:
   user:
     not_found: 'Account not found'
     created: 'Account created successfully'
+  post:
+    not_found: 'Post not found'
+    created: 'Post created successfully'
+  moment:
+    not_found: 'Moment not found'
+    created: 'Moment created successfully'
+  comment:
+    not_found: 'Comment not found'
+    created: 'Comment created successfully'
+  group:
+    not_found: 'Group not found'
+    created: 'Group created successfully'
+  group_message:
+    not_found: 'Message not found'
+    created: 'Message created successfully'
+  message:
+    not_found: 'Message not found'
+    created: 'Message created successfully'
+  removed: 'Removed'
+  added: 'Added'
+  follow: 'Follow'
+  unfollow: 'Unfollow'
+  password:
+    not_match: "Password don't match"
+    update_success: 'Password update successfully'
+  otp:
+    send_success: 'Otp send successfully'
+

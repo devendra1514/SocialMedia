@@ -8,7 +8,7 @@ module Api::V1
     def create
       otp = @user.otps.new(otp_params)
       if otp.save
-        render json: { message: 'Otp send successfully' }, status: :created
+        render json: { message: I18n.t('otp.send_sucess') }, status: :created
       else
         render json: { error: otp.errors }, status: :unprocessable_entity
       end

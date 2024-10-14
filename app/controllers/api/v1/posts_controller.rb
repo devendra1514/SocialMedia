@@ -45,7 +45,7 @@ module Api::V1
 
     def set_post
       @post = Post.find_by(post_id: params[:id])
-      return render_not_found('Post not found') unless @post.present?
+      return render_not_found(I18n.t('post.not_found')) unless @post.present?
       authorize! action_name.to_sym, @post
     end
   end

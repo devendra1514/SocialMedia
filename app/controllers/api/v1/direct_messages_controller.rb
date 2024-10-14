@@ -11,8 +11,7 @@ module Api::V1
     end
 
     def index
-      @pagy, @messages = pagy(DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",
-                          current_user.user_id, @recipient.user_id, @recipient.user_id, current_user.user_id).includes([:sender]))
+      @pagy, @messages = pagy(DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",current_user.user_id, @recipient.user_id, @recipient.user_id, current_user.user_id).includes([:sender]))
     end
 
     def create
@@ -51,7 +50,7 @@ module Api::V1
 
     def set_direct_message
       @direct_message = DirectMessage.find_by(direct_message_id: params[:id])
-      return render_not_found('Message not found') unless @direct_message
+      return render_not_found(I18n.t('message.not_found')) unless @direct_message
       authorize! action_name.to_sym, @direct_message
     end
   end

@@ -8,7 +8,7 @@ module Api::V1
       if @user.authenticate(params[:password])
         @token = JsonWebToken.encode(id: @user.user_id)
       else
-        render json: { error: "Password don't match" }, status: :bad_request
+        render json: { error: I18n.t('password.not_match') }, status: :bad_request
       end
     end
 
