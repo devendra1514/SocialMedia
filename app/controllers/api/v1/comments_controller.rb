@@ -1,41 +1,31 @@
 module Api::V1
   class CommentsController < Api::AppController
-    authorize_resource
-    skip_before_action :validate_token!, only: %i[index]
     before_action :set_parent_resource, only: %i[index create]
     before_action :set_comment, only: %i[show update destroy]
 
     def index
-      pagy, comments = pagy(@parent_resource.comments.includes([:user]))
-      render json: CommentSerializer.new(comments)
+      @pagy, @comments = pagy(@parent_resource.comments.includes(:user, user: :avatar_attachment))
     end
 
     def create
-      comment = @parent_resource.comments.new(comment_params)
-      if comment.save
-        render json: CommentSerializer.new(comment), status: :created
-      else
-        render_unprocessable_entity(comment.errors)
-      end
-    end
-
-    def update
-      if @comment.update(comment_params)
-        render json: CommentSerializer.new(@comment)
+      @comment = @parent_resource.comments.new(comment_params)
+      if @comment.save
       else
         render_unprocessable_entity(@comment.errors)
       end
     end
 
-    def show
-      render json: CommentSerializer.new(@comment)
+    def update
+      if @comment.update(comment_params)
+      else
+        render_unprocessable_entity(@comment.errors)
+      end
     end
+
+    def show; end
 
     def destroy
       @comment.destroy
-      render json: CommentSerializer.new(@comment)
-    rescue => e
-      render json: { error: e, message: e.message }, status: :internal_server_error
     end
 
     private
@@ -59,7 +49,8 @@ module Api::V1
 
     def set_comment
       @comment = Comment.find_by(comment_id: params[:id])
-      render_not_found('Comment not found') unless @comment.present?
+      return render_not_found('Comment not found') unless @comment.present?
+      authorize! action_name.to_sym, @comment
     end
   end
 end

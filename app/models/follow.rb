@@ -3,8 +3,8 @@ class Follow < ApplicationRecord
   self.primary_key = :follow_id
 
   # Associations
-  belongs_to :follower, class_name: 'User', foreign_key: 'follower_id'
-  belongs_to :followed, class_name: 'User', foreign_key: 'followed_id'
+  belongs_to :follower, class_name: :User, foreign_key: :follower_id
+  belongs_to :followed, class_name: :User, foreign_key: :followed_id
 
   # Validations
   validates :follower, uniqueness: { scope: :followed, message: 'already followed' }

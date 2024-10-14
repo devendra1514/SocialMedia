@@ -5,8 +5,6 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :name, null: false
       t.string :full_phone_number, null: false
       t.string :username, null: false
-      t.bigint :posts_count, default: 0
-      t.bigint :comments_count, default: 0
       t.string :password_digest, null: false
       t.boolean :verified, null: false, default: false
 

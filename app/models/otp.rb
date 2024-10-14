@@ -3,19 +3,18 @@ class Otp < ApplicationRecord
   self.primary_key = :otp_id
 
 	# Associations
-  belongs_to :user, class_name: 'User', foreign_key: 'user_id'
+  belongs_to :user, class_name: :User, foreign_key: :user_id
 
   # Validations
   validates :code, :purpose, presence: true
   enum purpose: {
-    signup: 0,
-    login: 1,
-    forgot_password: 2
+    login: 0,
+    forgot_password: 1
   }
 
   # Callbacks
   before_validation :generate_code
-  after_create :send_code
+  after_create_commit :send_code
 
   private
 

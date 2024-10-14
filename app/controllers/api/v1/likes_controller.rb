@@ -1,6 +1,5 @@
 module Api::V1
   class LikesController < Api::AppController
-    authorize_resource
     before_action :set_parent_resource, only: %i[create]
 
     def create

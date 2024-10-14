@@ -3,7 +3,7 @@ class Role < ApplicationRecord
   self.primary_key = :role_id
 
   # Associations
-  has_many :users, class_name: 'User', foreign_key: 'role_id', dependent: :destroy
+  has_many :users, class_name: :User, foreign_key: :role_id, dependent: :destroy
 
   # Validations
 end

@@ -1,0 +1,9 @@
+json = {
+    group_message_id: group_message.group_message_id,
+    content: group_message.content,
+    created_at: time_ago_in_words(group_message.created_at) + ' ago',
+}
+
+json[:sender] = render partial: 'api/v1/users/user', locals: { user: group_message.sender }
+
+json

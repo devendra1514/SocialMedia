@@ -3,8 +3,8 @@ module Api
     protect_from_forgery unless: -> { request.format.json? }
 
     rescue_from CanCan::AccessDenied do |e|
-       render json: { error: e.message }, status: :unauthorized
-     end
+      render json: { error: e.message }, status: :unauthorized
+    end
 
     include Pagy::Backend
     include JsonWebTokenValidation
@@ -17,7 +17,7 @@ module Api
       render json: { error: 'Account not found' }, status: :not_found unless @user.present?
     end
 
-    def render_not_found(msg)
+    def render_not_found(msg = 'Not found')
       render json: { error: msg }, status: :not_found
     end
 

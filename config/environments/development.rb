@@ -8,6 +8,7 @@ Rails.application.configure do
     Bullet.console       = true
     Bullet.rails_logger  = true
     Bullet.add_footer    = true
+    Bullet.raise = true
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -43,7 +44,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :supabase_dev
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

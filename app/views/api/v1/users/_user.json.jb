@@ -1,0 +1,14 @@
+json = {
+    user_id: user.user_id,
+    name: user.name,
+    username: user.username,
+    role_id: user.role_id,
+    posts_count: user.posts_count,
+    avatar_url: ActiveStorageUrlService.new(user.avatar).call
+}
+
+if @include_full_phone == true
+    json[:full_phone_number] = user.full_phone_number
+end
+
+json

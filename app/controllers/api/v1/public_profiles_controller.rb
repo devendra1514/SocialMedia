@@ -3,33 +3,35 @@ module Api::V1
     before_action :set_user
 
     def posts
-      pagy, posts = pagy(@user.posts)
-      render json: PostSerializer.new(posts, params: { post_author: @user, current_user: current_user })
+      @pagy, @posts = pagy(@user.posts.includes([:user]))
     end
 
     def comments
-      pagy, comments = pagy(@user.comments)
-      render json: CommentSerializer.new(comments, params: { comment_author: @user, current_user: current_user })
+      @pagy, @comments = pagy(@user.comments.includes([:user]))
     end
 
     def like_posts
-      pagy, posts = pagy(Post.includes(likes: :user).where(likes: { user_id: @user.user_id }).includes(:user))
-      render json: PostSerializer.new(posts, params: { current_user: @user, is_current_user_like_post: true })
+      @pagy, @posts = pagy(Post.includes(likes: :user).where(likes: { user_id: @user.user_id }).includes(user: :avatar_attachment))
     end
 
     def like_comments
-      pagy, comments = pagy(Comment.includes(likes: :user).where(likes: { user_id: @user.user_id }).includes(:user))
-      render json: CommentSerializer.new(comments, params: { current_user: @user, is_current_user_like_comment: true })
+      @pagy, @comments = pagy(Comment.includes(likes: :user).where(likes: { user_id: @user.user_id }).includes(user: :avatar_attachment))
     end
 
     def followers
-      users = User.includes(:followers).where(follows: { follower_id: @user.user_id })
-      render json: UserSerializer.new(users)
+      @pagy, @users = pagy(User.includes(:followers).where(follows: { follower_id: @user.user_id }).includes([:avatar_attachment]))
     end
 
     def followings
-      users = User.includes(:followings).where(follows: { followed_id: @user.user_id })
-      render json: UserSerializer.new(users)
+      @pagy, @users = pagy(User.includes(:followings).where(follows: { followed_id: @user.user_id }).includes([:avatar_attachment]))
+    end
+
+    def groups
+      @pagy, @groups = pagy(@user.created_groups.includes(:creator, :logo_attachment))
+    end
+
+    def moments
+      @pagy, @moments = pagy(@user.moments.includes(:user))
     end
 
     private

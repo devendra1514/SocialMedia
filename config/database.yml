@@ -15,10 +15,10 @@ test:
  database: social_media_test
 
 production:
- <<: *default
- database: <%= Rails.application.credentials.dig(:aws, :database) %>
- username: <%= Rails.application.credentials.dig(:aws, :username) %>
- password: <%= Rails.application.credentials.dig(:aws, :password) %>
- host: <%= Rails.application.credentials.dig(:aws, :host) %>
- port: <%= Rails.application.credentials.dig(:aws, :post) %>
- sslmode: require
+  <<: *default
+  database: <%= Rails.application.credentials.dig(:supabase, :database, :database_name) %>
+  username: <%= Rails.application.credentials.dig(:supabase, :database, :user) %>
+  password: <%= Rails.application.credentials.dig(:supabase, :database, :password) %>
+  host: <%= Rails.application.credentials.dig(:supabase, :database, :host) %>
+  port: <%= Rails.application.credentials.dig(:supabase, :database, :port) %>
+  sslmode: require

@@ -21,12 +21,23 @@ Rails.application.routes.draw do
         end
       end
       resource :password, only: %i[new create]
-      resources :users, only: %i[index create show update destroy]
+      resources :users, only: %i[index create show update destroy] do
+        resources :direct_messages, only: %i[index create update destroy] do
+          collection do
+            get 'conversations_user_list'
+          end
+        end
+      end
       resource :otp, only: %i[new create]
       resources :posts, only: %i[index create show update destroy]
       resources :comments, only: %i[index create show update destroy]
       resource :like, only: %i[create]
       resource :follow, only: %i[create]
+      resources :groups, only: %i[index create show update destroy] do
+        resources :group_members, only: %i[index create destroy]
+        resources :group_messages, only: %i[index create update destroy]
+      end
+      resources :moments, only: %i[index create show update destroy]
       resource :profile, only: [] do
         collection do
           get 'my_posts'
@@ -35,6 +46,8 @@ Rails.application.routes.draw do
           get 'my_like_comments'
           get 'my_followers'
           get 'my_followings'
+          get 'my_groups'
+          get 'my_moments'
         end
       end
 
@@ -46,6 +59,8 @@ Rails.application.routes.draw do
           get 'like_comments'
           get 'followers'
           get 'followings'
+          get 'groups'
+          get 'moments'
         end
       end
     end

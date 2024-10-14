@@ -77,3 +77,8 @@ gem 'bootstrap'
 gem 'font-awesome-rails'
 gem 'faker'
 gem 'rack-cors', require: 'rack/cors'
+gem 'mime-types'
+gem "aws-sdk-s3", require: false
+gem 'jb'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'

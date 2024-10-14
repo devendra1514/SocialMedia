@@ -1,0 +1,12 @@
+json = {
+    comment_id: comment.comment_id,
+    title: comment.title,
+    likes_count: comment.likes_count,
+    comments_count: comment.comments_count,
+    created_at: time_ago_in_words(comment.created_at) + ' ago',
+    liked: comment.likes.exists?(user_id: current_user.user_id)
+}
+
+json[:author] = render partial: 'api/v1/users/user', locals: { user: comment.user }
+
+json

@@ -1,0 +1,15 @@
+json = {}
+
+json[:group_messages] = @messages.map do |group_message|
+  render partial: 'group_message', locals: { group_message: group_message }
+end
+
+json[:pagination] = {
+  current_page: @pagy.page,
+  next_page: @pagy.next,
+  prev_page: @pagy.prev,
+  total_pages: @pagy.pages,
+  total_count: @pagy.count
+}
+
+json

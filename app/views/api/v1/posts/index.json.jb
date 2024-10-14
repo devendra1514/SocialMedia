@@ -1,0 +1,15 @@
+json = {}
+
+json[:posts] = @posts.map do |post|
+  render partial: 'post', locals: { post: post }
+end
+
+json[:pagination] = {
+  current_page: @pagy.page,
+  next_page: @pagy.next,
+  prev_page: @pagy.prev,
+  total_pages: @pagy.pages,
+  total_count: @pagy.count
+}
+
+json

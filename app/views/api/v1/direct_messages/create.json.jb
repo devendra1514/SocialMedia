@@ -1,0 +1,1 @@
+render partial: 'direct_message', locals: { direct_message: @direct_message }

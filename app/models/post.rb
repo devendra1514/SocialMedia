@@ -2,10 +2,19 @@ class Post < ApplicationRecord
   self.table_name = :posts
   self.primary_key = :post_id
 
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings do
+    mappings dynamic: 'false' do
+      indexes :title, type: 'text', analyzer: 'english'
+    end
+  end
+
   # Associations
-  belongs_to :user, class_name: 'User', foreign_key: 'user_id', counter_cache: :posts_count
-  has_many :comments, as: :commentable, class_name: 'Comment', dependent: :destroy
-  has_many :likes, as: :likeable, class_name: 'Like', dependent: :destroy
+  belongs_to :user, class_name: :User, foreign_key: :user_id, counter_cache: :posts_count
+  has_many :comments, as: :commentable, class_name: :Comment, dependent: :destroy
+  has_many :likes, as: :likeable, class_name: :Like, dependent: :destroy
 
   # Validations
   validates :title, presence: true
