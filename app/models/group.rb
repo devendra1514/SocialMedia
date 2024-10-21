@@ -1,4 +1,6 @@
 class Group < ApplicationRecord
+  include ThumbnailConcern
+
   self.table_name = :groups
   self.primary_key = :group_id
 
@@ -13,11 +15,12 @@ class Group < ApplicationRecord
   # Validations
   validates :name, presence: true
   validates :username, uniqueness: { case_sensitive: false }, username: true
-  validate :validate_logo_format, if: lambda { |obj| obj.logo.attached? }
+  validates :logo, mime_type: { media_type: 'image', max_size: 5.megabytes }, if: -> { logo.attached? }
 
   # Callbacks
   before_validation :set_username, if: -> { new_record? }
   after_create_commit :add_creator_as_member
+  after_create_commit -> { process_thumbnail(logo) }
 
   private
 
@@ -27,13 +30,5 @@ class Group < ApplicationRecord
 
   def add_creator_as_member
     group_memberships.create(user_id: user_id)
-  end
-
-  def validate_logo_format
-    mime_type = MIME::Types[logo.content_type].first
-
-    unless mime_type && mime_type.media_type == 'image'
-      errors.add(:logo, 'Invalid file type. Please upload a image file.')
-    end
   end
 end

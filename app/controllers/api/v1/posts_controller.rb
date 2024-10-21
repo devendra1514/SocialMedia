@@ -7,7 +7,7 @@ module Api::V1
       when 'following_posts'
         @pagy, @posts = pagy(Post.following_posts(current_user))
       else
-        @all_posts = Post.unscoped.left_joins(:comments, :likes).includes([:user, user: :avatar_attachment])
+        @all_posts = Post.unscoped.left_joins(:comments, :likes).includes(:user)
               .joins("LEFT JOIN comments AS child_comments ON child_comments.commentable_id = comments.comment_id AND child_comments.commentable_type = 'Comment'")
               .select('posts.*, GREATEST(COALESCE(MAX(comments.created_at), posts.created_at), COALESCE(MAX(child_comments.created_at), posts.created_at), COALESCE(MAX(likes.created_at), posts.created_at)) AS last_interaction_time')
               .group('posts.post_id')
@@ -40,7 +40,7 @@ module Api::V1
     private
 
     def post_params
-      params.permit(:title)
+      params.permit(:title, :media)
     end
 
     def set_post

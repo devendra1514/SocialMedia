@@ -3,7 +3,8 @@ json = {
     name: group.name,
     username: group.username,
     created_at: group.created_at,
-    logo_url: ActiveStorageUrlService.new(group.logo).call,
+    logo_url: ActiveStorageUrlService.new(group.logo).url,
+    thumb_url: ActiveStorageUrlService.new(group.media).thumb_url
 }
 
 json[:creator] = render partial: 'api/v1/users/user', locals: { user: group.creator }

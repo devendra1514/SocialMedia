@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include ThumbnailConcern
+
   self.table_name = :users
   self.primary_key = :user_id
 
@@ -30,17 +32,19 @@ class User < ApplicationRecord
   has_many :send_messages, class_name: :DirectMessage, foreign_key: :sender_id, dependent: :destroy
   has_many :recieved_messages, class_name: :DirectMessage, foreign_key: :recipient_id, dependent: :destroy
   has_many :moments, class_name: :Moment, foreign_key: :user_id, dependent: :destroy
+  has_many :views, class_name: :View, dependent: :destroy
 
   # Validations
   validates :name, presence: true
   validates :full_phone_number, uniqueness: true, phone: true
   validates :username, uniqueness: { case_sensitive: false }, username: true
-  validate :validate_avatar_format, if: lambda { |obj| obj.avatar.attached? }
+  validates :avatar, mime_type: { media_type: %w[image], max_size: 10.megabytes }, if: -> { avatar.attached? }
 
   # Callbacks
   before_validation :format_phone_number
   before_create :set_verified
   after_create_commit :send_otp
+  after_create_commit -> { process_thumbnail(avatar) }
 
   private
 
@@ -54,13 +58,5 @@ class User < ApplicationRecord
 
   def set_verified
     self.verified = false
-  end
-
-  def validate_avatar_format
-    mime_type = MIME::Types[avatar.content_type].first
-
-    unless mime_type && mime_type.media_type == 'image'
-      errors.add(:avatar, 'Invalid file type. Please upload a image file.')
-    end
   end
 end

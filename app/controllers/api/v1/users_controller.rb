@@ -11,7 +11,7 @@ module Api::V1
       if @user.save
         @include_full_phone = true
       else
-        render json: { errors: user.errors }, status: :unprocessable_entity
+        render json: { errors: @user.errors }, status: :unprocessable_entity
       end
     end
 

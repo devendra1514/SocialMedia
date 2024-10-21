@@ -22,3 +22,4 @@ production:
   host: <%= Rails.application.credentials.dig(:supabase, :database, :host) %>
   port: <%= Rails.application.credentials.dig(:supabase, :database, :port) %>
   sslmode: require
+  prepared_statements: false

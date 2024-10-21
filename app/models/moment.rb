@@ -1,4 +1,6 @@
 class Moment < ApplicationRecord
+  include ThumbnailConcern
+
   self.table_name = :moments
   self.primary_key = :moment_id
 
@@ -12,4 +14,16 @@ class Moment < ApplicationRecord
 
   # Validations
   validates :title, presence: true
+  validates :media, presence: true, mime_type: { media_type: %w[image video], max_size: 45.megabytes }
+
+  scope :all_moments, -> { includes(:user) }
+  scope :following_moments, -> (current_user) {
+    includes(:user).where(user: current_user.followings)
+  }
+  scope :user_moments, -> (user) {
+    user.moments
+  }
+
+  # Callbacks
+  after_create_commit -> { process_thumbnail(media) }
 end

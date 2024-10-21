@@ -1,6 +1,10 @@
 module Api::V1
   class LikesController < Api::AppController
-    before_action :set_parent_resource, only: %i[create]
+    before_action :set_parent_resource, only: %i[index create]
+
+    def index
+      @pagy, @users = pagy(User.joins(:likes).where(likes: { likeable_id: @parent_resource.id, likeable_type: @parent_resource.class.name }))
+    end
 
     def create
       like = @parent_resource.likes.find_or_initialize_by(user_id: current_user.user_id)

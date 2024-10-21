@@ -31,7 +31,8 @@ Rails.application.routes.draw do
       resource :otp, only: %i[new create]
       resources :posts, only: %i[index create show update destroy]
       resources :comments, only: %i[index create show update destroy]
-      resource :like, only: %i[create]
+      resources :likes, only: %i[index create]
+      resources :views, only: %i[index create]
       resource :follow, only: %i[create]
       resources :groups, only: %i[index create show update destroy] do
         resources :group_members, only: %i[index create destroy]
@@ -63,6 +64,8 @@ Rails.application.routes.draw do
           get 'moments'
         end
       end
+
+      resources :blobs, only: %i[create]
     end
   end
 end

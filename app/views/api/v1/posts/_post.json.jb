@@ -4,7 +4,9 @@ json = {
     likes_count: post.likes_count,
     comments_count: post.comments_count,
     created_at: time_ago_in_words(post.created_at) + ' ago',
-    liked: post.likes.exists?(user_id: current_user.user_id)
+    liked: post.likes.exists?(user_id: current_user.user_id),
+    media_url: ActiveStorageUrlService.new(post.media).url,
+    thumb_url: ActiveStorageUrlService.new(post.media).thumb_url
 }
 
 json[:author] = render partial: 'api/v1/users/user', locals: { user: post.user }
