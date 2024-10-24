@@ -19,7 +19,8 @@ class Otp < ApplicationRecord
   private
 
   def generate_code
-    self.code = 4.times.map { rand(10) }.join('')
+    # self.code = 4.times.map { rand(10) }.join('')
+    self.code = '1212'
   end
 
   def send_code

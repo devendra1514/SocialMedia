@@ -25,14 +25,6 @@ class Post < ApplicationRecord
   validates :media, mime_type: { media_type: %w[image video], max_size: 45.megabytes }, if: -> { media.attached? }
 
   # Scopes
-  scope :all_posts, -> { includes(:user) }
-  scope :following_posts, -> (current_user) {
-    includes(:user).where(user: current_user.followings)
-  }
-  scope :user_posts, -> (user) {
-    user.posts
-  }
-
   default_scope -> { order(:created_at) }
 
   # Callbacks

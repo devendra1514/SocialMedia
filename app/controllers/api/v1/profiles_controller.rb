@@ -19,11 +19,11 @@ module Api::V1
     end
 
     def my_followers
-      @pagy, @users = pagy(User.joins(:followers).where(follows: { follower_id: @user.id }).includes(:avatar_attachment))
+      @pagy, @users = pagy(@user.followers.includes(:avatar_attachment))
     end
 
     def my_followings
-      @pagy, @users = pagy(User.joins(:followings).where(follows: { followed_id: @user.id }).includes(:avatar_attachment))
+      @pagy, @users = pagy(@user.followings.includes(:avatar_attachment))
     end
 
     def my_groups

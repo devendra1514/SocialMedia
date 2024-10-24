@@ -10,9 +10,9 @@ module Api::V1
       like = @parent_resource.likes.find_or_initialize_by(user_id: current_user.user_id)
       if like.persisted?
         like.destroy
-        render json: { message: 'Unliked' }
+        @message = 'Disliked'
       elsif like.save
-        render json: { message: 'Liked' }
+        @message = 'Liked'
       else
         render_unprocessable_entity(like.errors)
       end

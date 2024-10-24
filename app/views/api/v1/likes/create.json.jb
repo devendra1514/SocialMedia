@@ -1,0 +1,11 @@
+json = {}
+
+json[:resource] = if @parent_resource.class.name == 'Post'
+  json[:resource] = render partial: 'api/v1/posts/post', locals: { post: @parent_resource }
+else
+  json[:resource] = render partial: 'api/v1/comments/comment', locals: { comment: @parent_resource }
+end
+
+json[:message] = @message
+
+json

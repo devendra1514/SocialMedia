@@ -16,13 +16,7 @@ class Moment < ApplicationRecord
   validates :title, presence: true
   validates :media, presence: true, mime_type: { media_type: %w[image video], max_size: 45.megabytes }
 
-  scope :all_moments, -> { includes(:user) }
-  scope :following_moments, -> (current_user) {
-    includes(:user).where(user: current_user.followings)
-  }
-  scope :user_moments, -> (user) {
-    user.moments
-  }
+  # Scopes
 
   # Callbacks
   after_create_commit -> { process_thumbnail(media) }

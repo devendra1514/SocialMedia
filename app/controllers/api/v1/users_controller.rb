@@ -11,12 +11,14 @@ module Api::V1
       if @user.save
         @include_full_phone = true
       else
-        render json: { errors: @user.errors }, status: :unprocessable_entity
+        render json: { error: @user.errors }, status: :unprocessable_entity
       end
     end
 
     def show
       @include_full_phone = true
+      @followers_count = current_user.followers.count
+      @followings_count = current_user.followings.count
     end
 
     def update
