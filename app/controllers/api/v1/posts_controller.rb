@@ -5,21 +5,22 @@ module Api::V1
     def index
       case params[:post_type]
       when 'following_posts'
-        @pagy, @posts = pagy(Post.where(user: current_user.followings).includes(
-          media_attachment: [blob: :variant_records],
-          user: [avatar_attachment: [blob: :variant_records]]))
+        posts = Post.where(user: current_user.followings)
+                  .includes(
+                    media_attachment: :blob,
+                    user: [avatar_attachment: :blob]
+                  )
+
+        @pagy, @posts = pagy(posts)
       else
-        @all_posts = Post.unscoped
-          .left_joins(:comments, :likes)
-          .includes(
-            media_attachment: [blob: :variant_records],
-            user: [avatar_attachment: [blob: :variant_records]])
-          .joins("LEFT JOIN comments AS child_comments ON child_comments.commentable_id = comments.comment_id
-            AND child_comments.commentable_type = 'Comment'")
-          .select('posts.*, GREATEST(COALESCE(MAX(comments.created_at), posts.created_at), COALESCE(MAX(child_comments.created_at), posts.created_at), COALESCE(MAX(likes.created_at), posts.created_at)) AS last_interaction_time')
-          .group('posts.post_id')
-        @all_posts = @all_posts.search(params[:q]).records if params[:q].present?
-        @pagy, @posts = pagy(@all_posts)
+        posts = Post.unscoped
+                  .includes(
+                    media_attachment: [blob: [preview_image_attachment: :blob]],
+                    user: [avatar_attachment: :blob]
+                  )
+        posts = posts.search(params[:q]).records if params[:q].present?
+
+        @pagy, @posts = pagy(posts)
       end
     end
 

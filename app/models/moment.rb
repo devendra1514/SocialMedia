@@ -1,8 +1,8 @@
 class Moment < ApplicationRecord
-  include ThumbnailConcern
-
   self.table_name = :moments
   self.primary_key = :moment_id
+
+  include ThumbnailConcern
 
   has_one_attached :media
 
@@ -14,10 +14,12 @@ class Moment < ApplicationRecord
 
   # Validations
   validates :title, presence: true
-  validates :media, presence: true, mime_type: { media_type: %w[image video], max_size: 45.megabytes }
+  validates :media, presence: true, mime_type: { media_type: %w[video], max_size: 45.megabytes }
 
   # Scopes
 
   # Callbacks
-  after_create_commit -> { process_thumbnail(media) }
+  after_commit -> {
+    process_thumbnail(media) if media.attached? && media.blob.saved_changes?
+  }, on: [:create, :update]
 end

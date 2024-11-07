@@ -28,6 +28,9 @@ module Api::V1
       when 'Comment'
         @parent_resource = Comment.find_by(comment_id: params[:resource_id])
         render_not_found('Comment not found') unless @parent_resource.present?
+      when 'Moment'
+        @parent_resource = Moment.find_by(moment_id: params[:resource_id])
+        render_not_found('Moment not found') unless @parent_resource.present?
       else
         render json: { error: 'params is missing or invalid' }, status: :bad_request
       end

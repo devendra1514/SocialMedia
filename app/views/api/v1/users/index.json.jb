@@ -1,7 +1,16 @@
 json = {}
 
 json[:users] = @users.map do |user|
-  render partial: 'api/v1/users/user', locals: { user: user }
+  {
+    user_id: user.user_id,
+    name: user.name,
+    username: user.username,
+    role_id: user.role_id,
+    posts_count: user.posts_count,
+    avatar_url: ActiveStorageUrlService.new(user.avatar).url,
+    thumb_url: ActiveStorageUrlService.new(user.avatar).thumb_url,
+    followed: current_user.followings.exists?(user_id: user.user_id)
+  }
 end
 
 json[:pagination] = {

@@ -3,7 +3,7 @@ module Api::V1
     before_action :set_user
 
     def my_posts
-      @pagy, @posts = pagy(@user.posts.includes(:user))
+      @pagy, @posts = pagy(@user.posts.includes(:user, media_attachment: [blob: [preview_image_attachment: :blob]]))
     end
 
     def my_comments
@@ -31,7 +31,7 @@ module Api::V1
     end
 
     def my_moments
-      @pagy, @moments = pagy(@user.moments.includes(:user))
+      @pagy, @moments = pagy(@user.moments.includes(:user, [media_attachment: [blob: [preview_image_attachment: :blob]]]))
     end
 
     private

@@ -1,8 +1,8 @@
 class Group < ApplicationRecord
-  include ThumbnailConcern
-
   self.table_name = :groups
   self.primary_key = :group_id
+
+  include ThumbnailConcern
 
   has_one_attached :logo
 
@@ -20,7 +20,9 @@ class Group < ApplicationRecord
   # Callbacks
   before_validation :set_username, if: -> { new_record? }
   after_create_commit :add_creator_as_member
-  after_create_commit -> { process_thumbnail(logo) }
+  after_commit -> {
+    process_thumbnail(logo) if logo.attached? && logo.blob.saved_changes?
+  }, on: [:create, :update]
 
   private
 

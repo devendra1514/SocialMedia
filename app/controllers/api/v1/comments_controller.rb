@@ -4,7 +4,8 @@ module Api::V1
     before_action :set_comment, only: %i[show update destroy]
 
     def index
-      @pagy, @comments = pagy(@parent_resource.comments.includes(:user, user: :avatar_attachment))
+      @pagy, @comments = pagy(@parent_resource.comments.includes(
+        user: [avatar_attachment: [blob: :variant_records]]))
     end
 
     def create

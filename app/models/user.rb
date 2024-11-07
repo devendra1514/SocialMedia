@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-  include ThumbnailConcern
-
   self.table_name = :users
   self.primary_key = :user_id
+
+  include ThumbnailConcern
 
   has_secure_password
 
@@ -44,7 +44,9 @@ class User < ApplicationRecord
   before_validation :format_phone_number
   before_create :set_verified
   after_create_commit :send_otp
-  after_create_commit -> { process_thumbnail(avatar) }
+  after_commit -> {
+    process_thumbnail(avatar) if avatar.attached? && avatar.blob.saved_changes?
+  }, on: [:create, :update]
 
   private
 

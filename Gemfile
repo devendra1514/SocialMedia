@@ -49,6 +49,8 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem 'dotenv'
   gem 'byebug'
+  gem 'rspec-rails', '~> 7.0.0'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -61,6 +63,11 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem 'bullet'
+end
+
+group :test do
+  gem 'simplecov', require: false
+  gem 'shoulda-matchers', '~> 6.0'
 end
 
 gem 'sassc-rails'

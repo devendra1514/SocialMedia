@@ -3,10 +3,12 @@ module ThumbnailConcern
 
   included do
     def process_thumbnail(file)
+      # this can be process in background using background job
+      return unless file.representable?
       if file.image?
-        thumb_blob = file.variant(resize_to_fill: [100, 100]).processed
+        file.variant(resize_to_fill: SMALL_THUMB_SIZE).processed
       elsif file.video?
-        thumb_blob = file.preview(resize_to_fill: [300, 300]).processed
+        file.preview(resize_to_fill: MEDIUM_THUMB_SIZE).processed
       end
     end
   end

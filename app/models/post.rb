@@ -1,11 +1,10 @@
 class Post < ApplicationRecord
-  include ThumbnailConcern
-
   self.table_name = :posts
   self.primary_key = :post_id
 
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
+  include ThumbnailConcern
 
   settings do
     mappings dynamic: 'false' do
@@ -28,5 +27,7 @@ class Post < ApplicationRecord
   default_scope -> { order(:created_at) }
 
   # Callbacks
-  after_create_commit -> { process_thumbnail(media) }
+  after_commit -> {
+    process_thumbnail(media) if media.attached? && media.blob.saved_changes?
+  }, on: [:create, :update]
 end

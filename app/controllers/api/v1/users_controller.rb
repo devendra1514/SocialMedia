@@ -3,7 +3,11 @@ module Api::V1
     skip_before_action :validate_token!, only: %i[create]
 
     def index
-      @pagy, @users = pagy(User.includes([:avatar_attachment]))
+      if params[:q].present?
+        @pagy, @users = pagy(User.where("users.name ILIKE ? OR users.username ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%").includes([:avatar_attachment]))
+      else
+        @pagy, @users = pagy(User.includes([:avatar_attachment]))
+      end
     end
 
     def create
