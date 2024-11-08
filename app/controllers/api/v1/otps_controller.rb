@@ -1,9 +1,7 @@
 module Api::V1
   class OtpsController < Api::AppController
-    skip_before_action :validate_token!, only: %i[new create]
+    skip_before_action :validate_token!, only: %i[create]
     before_action :set_user, only: %i[create]
-
-    def new; end
 
     def create
       otp = @user.otps.new(otp_params)

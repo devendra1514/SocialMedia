@@ -1,8 +1,6 @@
 module Api::V1
   class PasswordsController < Api::AppController
-    skip_before_action :validate_token!, only: %i[new create]
-
-    def new; end
+    skip_before_action :validate_token!, only: %i[create]
 
     def create
       full_phone_number = Phonelib.parse(params[:full_phone_number]).full_e164

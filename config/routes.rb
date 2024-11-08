@@ -10,8 +10,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  root to: "api/homes#index"
-
   namespace :api do
     namespace :v1 do
       resource :session, only: [] do
@@ -20,7 +18,7 @@ Rails.application.routes.draw do
           post 'login_with_otp'
         end
       end
-      resource :password, only: %i[new create]
+      resource :password, only: %i[create]
       resources :users, only: %i[index create show update destroy] do
         resources :direct_messages, only: %i[index create update destroy] do
           collection do
@@ -28,7 +26,7 @@ Rails.application.routes.draw do
           end
         end
       end
-      resource :otp, only: %i[new create]
+      resource :otp, only: %i[create]
       resources :posts, only: %i[index create show update destroy]
       resources :comments, only: %i[index create show update destroy]
       resources :likes, only: %i[index create]
