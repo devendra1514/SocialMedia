@@ -135,6 +135,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.5.1)
+    docile (1.4.1)
     dotenv (3.1.4)
     drb (2.2.1)
     elastic-transport (8.3.5)
@@ -154,6 +156,11 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     execjs (2.9.1)
+    factory_bot (6.5.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
+      railties (>= 5.0.0)
     faker (3.4.2)
       i18n (>= 1.8.11, < 2)
     faraday (2.12.0)
@@ -316,6 +323,23 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    rspec-core (3.13.2)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (7.0.1)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.1)
     ruby-vips (2.2.2)
       ffi (~> 1.12)
       logger
@@ -328,6 +352,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    shoulda-matchers (6.4.0)
+      activesupport (>= 5.2.0)
     sidekiq (7.3.2)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
@@ -338,6 +364,12 @@ GEM
       fugit (~> 1.8)
       globalid (>= 1.0.1)
       sidekiq (>= 6)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.1)
+    simplecov_json_formatter (0.1.4)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -388,6 +420,7 @@ DEPENDENCIES
   dotenv
   elasticsearch-model
   elasticsearch-rails
+  factory_bot_rails
   faker
   font-awesome-rails
   image_processing (~> 1.2)
@@ -402,9 +435,12 @@ DEPENDENCIES
   puma (>= 5.0)
   rack-cors
   rails (~> 7.1.4)
+  rspec-rails (~> 7.0.0)
   sassc-rails
+  shoulda-matchers (~> 6.0)
   sidekiq
   sidekiq-cron
+  simplecov
   sprockets-rails
   stimulus-rails
   turbo-rails
