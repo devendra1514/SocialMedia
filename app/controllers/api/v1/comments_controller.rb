@@ -5,7 +5,7 @@ module Api::V1
 
     def index
       @pagy, @comments = pagy(@parent_resource.comments.includes(
-        user: [avatar_attachment: [blob: :variant_records]]))
+        user: [avatar_attachment: :blob]))
     end
 
     def create
