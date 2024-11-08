@@ -6,20 +6,11 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-supabase_dev:
+production:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:supabase, :storage, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:supabase, :storage, :secret_access_key) %>
-  region: ap-south-1
-  bucket: Development
-  endpoint: https://wwvynhbxuqkrfjpnxmnq.supabase.co/storage/v1/s3
-  force_path_style: true
-
-supabase_prod:
-  service: S3
-  access_key_id: <%= Rails.application.credentials.dig(:supabase, :storage, :access_key_id) %>
-  secret_access_key: <%= Rails.application.credentials.dig(:supabase, :storage, :secret_access_key) %>
-  region: ap-south-1
-  bucket: Production
-  endpoint: https://wwvynhbxuqkrfjpnxmnq.supabase.co/storage/v1/s3
+  region: <%= Rails.application.credentials.dig(:supabase, :storage, :region) %>
+  bucket: <%= Rails.application.credentials.dig(:supabase, :storage, :bucket) %>
+  endpoint: <%= Rails.application.credentials.dig(:supabase, :storage, :endpoint) %>
   force_path_style: true

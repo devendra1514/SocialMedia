@@ -9,24 +9,19 @@ class ActiveStorageUrlService
   def url
     return nil unless @file.attached?
 
-    if Rails.env.test?
+    if Rails.env.test? || Rails.env.development?
       return @host + rails_blob_url(@file, only_path: true)
     end
 
-    project_id = Rails.application.credentials.dig(:supabase, :project_id)
-    if Rails.env.development?
-      return "https://#{project_id}.supabase.co/storage/v1/object/public/Development/#{@file.blob.key}"
-    end
-
     if Rails.env.production?
-      return "https://#{project_id}.supabase.co/storage/v1/object/public/Production/#{@file.blob.key}"
+      prod_url(@file.blob.key)
     end
   end
 
   def thumb_url
     return nil unless @file.attached?
 
-    return nil unless @file.representable? # this will check for varient key is present or not
+    return nil unless @file.representable? # this will check that is @file is representable or not
 
     if @file.image?
       thumb_blob = @file.variant(resize_to_fill: SMALL_THUMB_SIZE)
@@ -34,19 +29,22 @@ class ActiveStorageUrlService
       thumb_blob = @file.preview(resize_to_fill: MEDIUM_THUMB_SIZE)
     end
 
-    if Rails.env.test?
+    if Rails.env.test? || Rails.env.development?
       return @host + rails_blob_url(thumb_blob, only_path: true)
     end
 
-    project_id = Rails.application.credentials.dig(:supabase, :project_id)
-    if Rails.env.development?
-      return "https://#{project_id}.supabase.co/storage/v1/object/public/Development/#{thumb_blob.key}"
-    end
-
     if Rails.env.production?
-      return "https://#{project_id}.supabase.co/storage/v1/object/public/Production/#{thumb_blob.key}"
+      prod_url(@file.blob.key)
     end
   rescue => e
     e.message
+  end
+
+  private
+
+  def prod_url(thumb_key)
+    project_id = Rails.application.credentials.dig(:supabase, :project_id)
+    bucket = Rails.application.credentials.dig(:supabase, :bucket)
+    "https://#{project_id}.supabase.co/storage/v1/object/public/#{bucket}/#{thumb_key}"
   end
 end
