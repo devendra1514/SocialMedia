@@ -2,6 +2,11 @@ module Api::V1
   class PublicProfilesController < Api::AppController
     before_action :set_user
 
+    def show
+      @followers_count = @user.followers.count
+      @followings_count = @user.followings.count
+    end
+
     def posts
       @pagy, @posts = pagy(@user.posts.includes([:user]))
     end

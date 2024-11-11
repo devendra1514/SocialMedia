@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
+  root to: "api/welcomes#index"
+
   namespace :api do
     namespace :v1 do
       resource :session, only: [] do
@@ -50,7 +52,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :public_profiles, only: [] do
+      resources :public_profiles, only: %i[show] do
         member do
           get 'posts'
           get 'comments'
