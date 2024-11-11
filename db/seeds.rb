@@ -1,7 +1,7 @@
 if Rails.env.production?
-	AdminUser.find_or_initialize_by(Rails.application.credentials.dig(:admin, :email)) do |admin_user|
-		admin_user.password = Rails.application.credentials.dig(:admin, :password)
-		admin_user.password_confirmation = Rails.application.credentials.dig(:admin, :password)
+	AdminUser.find_or_initialize_by(email: Rails.application.credentials.dig(:admin, :email).to_s) do |admin_user|
+		admin_user.password = Rails.application.credentials.dig(:admin, :password).to_s
+		admin_user.password_confirmation = Rails.application.credentials.dig(:admin, :password).to_s
 		admin_user.save
 	end
 else

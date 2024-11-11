@@ -34,7 +34,7 @@ class ActiveStorageUrlService
     end
 
     if Rails.env.production?
-      prod_url(@file.blob.key)
+      prod_url(thumb_blob.key)
     end
   rescue => e
     e.message
@@ -44,7 +44,7 @@ class ActiveStorageUrlService
 
   def prod_url(thumb_key)
     project_id = Rails.application.credentials.dig(:supabase, :project_id)
-    bucket = Rails.application.credentials.dig(:supabase, :bucket)
+    bucket = Rails.application.credentials.dig(:supabase, :storage, :bucket)
     "https://#{project_id}.supabase.co/storage/v1/object/public/#{bucket}/#{thumb_key}"
   end
 end
