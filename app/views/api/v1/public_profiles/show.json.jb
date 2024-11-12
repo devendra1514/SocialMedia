@@ -6,6 +6,7 @@ json = {
     posts_count: @user.posts_count,
     followings_count: @followings_count,
     followers_count: @followers_count,
+    followed: @followed,
     avatar_url: ActiveStorageUrlService.new(@user.avatar).url,
     thumb_url: ActiveStorageUrlService.new(@user.avatar).thumb_url
 }

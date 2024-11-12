@@ -5,6 +5,7 @@ module Api::V1
     def show
       @followers_count = @user.followers.count
       @followings_count = @user.followings.count
+      @followed = @user.followers.exists?(user_id: current_user.user_id)
     end
 
     def posts
@@ -24,11 +25,11 @@ module Api::V1
     end
 
     def followers
-      @pagy, @users = pagy(User.includes(:followers).where(follows: { follower_id: @user.user_id }).includes([:avatar_attachment]))
+      @pagy, @users = pagy(@user.followers)
     end
 
     def followings
-      @pagy, @users = pagy(User.includes(:followings).where(follows: { followed_id: @user.user_id }).includes([:avatar_attachment]))
+      @pagy, @users = pagy(@user.followings)
     end
 
     def groups
