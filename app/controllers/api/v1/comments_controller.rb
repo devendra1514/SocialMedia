@@ -3,6 +3,12 @@ module Api::V1
     before_action :set_parent_resource, only: %i[index create]
     before_action :set_comment, only: %i[show update destroy]
 
+    RESOURCE_CLASSESS = {
+      'Post' => Post,
+      'Moment' => Moment,
+      'Comment' => Comment
+    }.freeze
+
     def index
       @pagy, @comments = pagy(@parent_resource.comments.includes(
         user: [avatar_attachment: :blob]))
@@ -36,15 +42,13 @@ module Api::V1
     end
 
     def set_parent_resource
-      case params[:resource_type]
-      when 'Post'
-        @parent_resource = Post.find_by(post_id: params[:resource_id])
-        render_not_found(I18n.t('post.not_found')) unless @parent_resource.present?
-      when 'Comment'
-        @parent_resource = Comment.find_by(comment_id: params[:resource_id])
-        render_not_found(I18n.t('comment.not_found')) unless @parent_resource.present?
+      resource_class = RESOURCE_CLASSESS[params[:resource_type]]
+
+      if resource_class.nil?
+        render json: { error: I18n.t('param_missing_or_invalid') }, status: :bad_request
       else
-        render json: { error: 'params is missing or invalid' }, status: :bad_request
+        @parent_resource = resource_class.find_by("#{resource_class.name.underscore}_id": params[:resource_id])
+        render_not_found(I18n.t("#{resource_class.name.underscore}.not_found")) unless @parent_resource.present?
       end
     end
 

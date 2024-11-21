@@ -7,5 +7,5 @@ class View < ApplicationRecord
   belongs_to :viewable, polymorphic: true, counter_cache: :views_count
 
   # Validations
-  validates :user, uniqueness: { scope: :viewable, message: 'already viewed' }
+  validates :user, uniqueness: { scope: :viewable }
 end

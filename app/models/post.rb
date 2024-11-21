@@ -2,15 +2,7 @@ class Post < ApplicationRecord
   self.table_name = :posts
   self.primary_key = :post_id
 
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
   include ThumbnailConcern
-
-  settings do
-    mappings dynamic: 'false' do
-      indexes :title, type: 'text', analyzer: 'english'
-    end
-  end
 
   has_one_attached :media
 

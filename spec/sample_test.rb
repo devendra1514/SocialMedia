@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe 'GetTime' do
-  let(:current_time) { Time.now }
+  let(:current_time) { Time.current }
 
   before(:each) do
     puts("Before Each")
     sleep(1)
-    puts(Time.now)
+    puts(Time.current)
     sleep(1)
     puts(current_time)
     puts("Before Each End")

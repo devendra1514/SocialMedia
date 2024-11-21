@@ -14,7 +14,7 @@ module Api
     def set_user
       full_phone_number = Phonelib.parse(params[:full_phone_number]).full_e164
       @user = User.find_by(full_phone_number: full_phone_number)
-      render json: { error: 'Account not found' }, status: :not_found unless @user.present?
+      render json: { error: I18n.t('user.not_found') }, status: :not_found unless @user.present?
     end
 
     def render_not_found(msg = 'Not found')

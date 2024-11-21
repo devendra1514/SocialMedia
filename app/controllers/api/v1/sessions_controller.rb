@@ -4,7 +4,7 @@ module Api::V1
     before_action :set_user, only: %i[login_with_password]
 
     def login_with_password
-      return render json: { error: ACCOUNT_VERIFICATION_WARNING }, status: :bad_request unless @user.verified
+      return render json: { error: I18n.t('account_verification_warning') }, status: :bad_request unless @user.verified
       if @user.authenticate(params[:password])
         @token = JsonWebToken.encode(id: @user.user_id)
       else

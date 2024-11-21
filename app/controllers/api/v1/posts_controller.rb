@@ -10,8 +10,6 @@ module Api::V1
                     media_attachment: :blob,
                     user: [avatar_attachment: :blob]
                   )
-
-        @pagy, @posts = pagy(posts)
       else
         posts = Post.unscoped
                   .includes(
@@ -20,8 +18,8 @@ module Api::V1
                   )
         posts = posts.search(params[:q]).records if params[:q].present?
 
-        @pagy, @posts = pagy(posts)
       end
+      @pagy, @posts = pagy(posts)
     end
 
     def create

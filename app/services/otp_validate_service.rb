@@ -1,6 +1,4 @@
 class OtpValidateService
-  OTP_EXPIRATION_TIME = 4.minutes
-
   attr_accessor :user, :otp, :error
 
   def initialize(full_phone_number, purpose, code)
@@ -12,10 +10,10 @@ class OtpValidateService
   end
 
   def valid_code?
-    return add_error('Account not found') if @user.nil?
-    return add_error('Otp not sent') if @otp.nil?
-    return add_error('Code is expired') if otp_expired?
-    return add_error('Code is invalid') unless valid_otp_code?
+    return add_error(I18n.t('user.not_found')) if @user.nil?
+    return add_error(I18n.t('otp.not_sent')) if @otp.nil?
+    return add_error(I18n.t('otp.code_expired')) if otp_expired?
+    return add_error(I18n.t('otp.code_invalid')) unless valid_otp_code?
     true
   end
 

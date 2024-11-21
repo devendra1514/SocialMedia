@@ -4,10 +4,12 @@ module Api::V1
 
     def index
       if params[:q].present?
-        @pagy, @users = pagy(User.where("users.name ILIKE ? OR users.username ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%").includes([:avatar_attachment]))
+        users = User.search_with_name_or_username(params[:q])
       else
-        @pagy, @users = pagy(User.includes([:avatar_attachment]))
+        users = User.all
       end
+
+      @pagy, @users = pagy(users.includes(avatar_attachment: :blob))
     end
 
     def create
@@ -41,7 +43,7 @@ module Api::V1
     private
 
     def user_create_params
-      params.permit(:name, :full_phone_number, :username, :password, :password_confirmation, :avatar).merge(role_id: Role.find_by(role_id: 'user').role_id)
+      params.permit(:name, :full_phone_number, :username, :password, :password_confirmation, :avatar).merge(role_id: Role.find_by(name: 'user').role_id)
     end
 
     def user_update_params

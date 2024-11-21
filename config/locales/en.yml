@@ -53,9 +53,44 @@ en:
   added: 'Added'
   follow: 'Follow'
   unfollow: 'Unfollow'
+  like: 'Liked'
+  dislike: 'Disliked'
+  viewed: 'Viewed'
+  already_viewed: 'Already Viewed'
+
+  param_missing_or_invalid: 'params is missing or invalid'
+  account_verification_warning: 'Account is not verified, login with otp to verify otherwise your account will be deleted after 24 hours'
   password:
     not_match: "Password don't match"
     update_success: 'Password update successfully'
   otp:
+    not_sent: 'Otp not sent'
+    code_expired: 'Code is expired'
+    code_invalid: 'Code is invalid'
     send_success: 'Otp send successfully'
-
+  jwt:
+    token_missing: 'Not Authenticate'
+    account_deleted: 'Account is deleted'
+    session_expired: 'Session expired'
+    invalid_token: 'Invalid token'
+    account_not_verified: 'Account is not verified, login with OTP to verify'
+  activerecord:
+    errors:
+      models:
+        view:
+          attributes:
+            user:
+              taken: 'already viewed'
+        otp:
+          attributes:
+            code:
+              blank: "must be present"
+              invalid: "must contain only numbers"
+            purpose:
+              inclusion: "is not a valid purpose"
+        role:
+          attributes:
+            name:
+              blank: "can't be empty"
+              taken: "is already exist"
+              inclusion: "is not valid role"

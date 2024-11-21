@@ -12,4 +12,4 @@ else
 	end
 end
 
-Role.find_or_initialize_by(role_id: 'user').save
+Role.find_or_initialize_by(name: 'user').save

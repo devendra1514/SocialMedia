@@ -2,7 +2,6 @@ json = {
     user_id: current_user.user_id,
     name: current_user.name,
     username: current_user.username,
-    role_id: current_user.role_id,
     posts_count: current_user.posts_count,
     followings_count: @followings_count,
     followers_count: @followers_count,
