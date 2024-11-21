@@ -1,7 +1,7 @@
 # lib/tasks/populate.rake
 
 namespace :db do
-  desc "Populate database with large records excluding admin-related tables"
+  desc "Populate database with large records"
   task populate: :environment do
     require 'faker'
 
@@ -24,14 +24,11 @@ namespace :db do
     User.destroy_all
 
     puts 'Creating Roles...'
-    # Create roles if not already present
-    role = Role.find_or_initialize_by(role_id: 'user')
-    role.save
-
+    role = Role.find_or_create_by(name: 'user')
 
     puts 'Creating Users...'
     users = []
-    50.times do
+    10.times do
       name = Faker::Name.name
       username = Faker::Internet.username(specifier: name, separators: %w(. _ ))
       user = User.new(
@@ -45,7 +42,7 @@ namespace :db do
     end
 
 
-    puts 'Creating Sports Posts...'
+    puts 'Creating Posts...'
     posts = []
     users.each do |user|
       rand(5..10).times do
@@ -158,41 +155,6 @@ namespace :db do
         created_at: (1..20).to_a.sample.days.ago
       )
       message.save
-    end
-
-    puts 'Creating Sports Moments...'
-    moments = []
-    users.each do |user|
-      rand(5..10).times do
-        moment = Moment.new(
-          user: user,
-          title: Faker::Quote.jack_handey,
-          created_at: (1..20).to_a.sample.days.ago
-        )
-        moments << moment if moment.save
-      end
-    end
-
-    puts 'Creating Likes for Moment...'
-    moments.each do |moment|
-      rand(1..2).times do
-        like = Like.new(
-          user: users.sample,
-          likeable: moment
-        )
-        like.save
-      end
-    end
-
-    puts 'Creating Views for Moment...'
-    moments.each do |moment|
-      rand(1..2).times do
-        view = View.new(
-          user: users.sample,
-          viewable: moment
-        )
-        view.save
-      end
     end
 
     puts 'Seeding completed successfully!'

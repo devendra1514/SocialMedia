@@ -6,9 +6,9 @@ module Api::V1
       follow = @current_user.follows_as_follower.find_or_initialize_by(followed_id: @followed_user.user_id)
       if follow.persisted?
         follow.destroy
-        render json: { message: 'Unfollow' }
+        render json: { message: I18n.t('unfollow') }
       elsif follow.save
-        render json: { message: 'Follow' }
+        render json: { message: I18n.t('follow') }
       else
         render_unprocessable_entity(follow.errors)
       end

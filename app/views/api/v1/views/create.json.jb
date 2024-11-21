@@ -1,0 +1,9 @@
+json = {}
+
+json[:resource] = if @parent_resource.class.name == 'Moment'
+  json[:resource] = render partial: 'api/v1/moments/moment', locals: { moment: @parent_resource }
+end
+
+json[:message] = @message
+
+json

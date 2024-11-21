@@ -30,7 +30,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'validations' do
-    before { create(:user, full_phone_number: '+919898989898') }
+    before { create(:user) }
 
     it { should validate_presence_of(:name) }
     it { should validate_uniqueness_of(:full_phone_number).case_insensitive }

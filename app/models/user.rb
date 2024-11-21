@@ -3,6 +3,7 @@ class User < ApplicationRecord
   self.primary_key = :user_id
 
   include ThumbnailConcern
+  include UserSearchConcern
 
   has_secure_password
 
