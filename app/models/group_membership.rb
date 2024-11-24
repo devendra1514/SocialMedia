@@ -7,7 +7,7 @@ class GroupMembership < ApplicationRecord
   belongs_to :group, class_name: :Group, foreign_key: :group_id
 
   # Validations
-  validates :member, uniqueness: { scope: :group, message: 'is already member of this group' }
+  validates :member, uniqueness: { scope: :group }
 
   # Callbacks
 end

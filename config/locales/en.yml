@@ -1,32 +1,3 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
   user:
     not_found: 'Account not found'
@@ -46,6 +17,8 @@ en:
   group_message:
     not_found: 'Message not found'
     created: 'Message created successfully'
+  member:
+    not_found: 'Member not found'
   message:
     not_found: 'Message not found'
     created: 'Message created successfully'
@@ -57,7 +30,7 @@ en:
   dislike: 'Disliked'
   viewed: 'Viewed'
   already_viewed: 'Already Viewed'
-
+  not_authorised: 'You are not authorized'
   param_missing_or_invalid: 'params is missing or invalid'
   account_verification_warning: 'Account is not verified, login with otp to verify otherwise your account will be deleted after 24 hours'
   password:
@@ -94,3 +67,54 @@ en:
               blank: "can't be empty"
               taken: "is already exist"
               inclusion: "is not valid role"
+        user:
+          attributes:
+            full_phone_number:
+              taken: 'is already registered'
+            username:
+              taken: 'is already taken'
+              blank: "can't be blank"
+              invalid: "must only contain lowercase letters, numbers, underscores, or dots"
+              too_short: "must be at least %{count} characters long"
+              too_long: "must be at most %{count} characters long"
+            avatar:
+              file_type: "Invalid file type. Please upload a %{allowed_types} file."
+              file_size: "File size should be less than %{size} MB."
+        group:
+          attributes:
+            username:
+              too_short: 'must be at least %{count} characters long'
+              too_long: 'must be at most %{count} characters long'
+              taken: 'is already taken'
+              invalid: "must only contain lowercase letters, numbers, underscores, or dots"
+            logo:
+              file_type: "Invalid file type. Please upload a %{allowed_types} file."
+              file_size: "File size should be less than %{size} MB."
+        post:
+          attributes:
+            media:
+              file_type: "Invalid file type. Please upload a %{allowed_types} file."
+              file_size: "File size should be less than %{size} MB."
+        moment:
+          attributes:
+            media:
+              file_type: "Invalid file type. Please upload a %{allowed_types} file."
+              file_size: "File size should be less than %{size} MB."
+        comment:
+          attributes:
+            base:
+              invalid_comment_level: "You can't comment more than 1 level"
+        group_membership:
+          attributes:
+            member:
+              taken: 'is already a part of this group.'
+        like:
+          attributes:
+            user:
+              taken: 'already liked'
+        follow:
+          attributes:
+            follower:
+              taken: 'already followed'
+            base:
+              follow_yourself: "Don't follow yourself"

@@ -7,14 +7,14 @@ class Follow < ApplicationRecord
   belongs_to :followed, class_name: :User, foreign_key: :followed_id
 
   # Validations
-  validates :follower, uniqueness: { scope: :followed, message: 'already followed' }
+  validates :follower, uniqueness: { scope: :followed }
   validate :check_own_follow
 
   private
 
   def check_own_follow
     if follower&.user_id == followed&.user_id
-      errors.add(:base, "Don't follow yourself")
+      errors.add(:base, :follow_yourself)
     end
   end
 end

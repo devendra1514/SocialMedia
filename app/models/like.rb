@@ -7,5 +7,5 @@ class Like < ApplicationRecord
   belongs_to :likeable, polymorphic: true, counter_cache: :likes_count
 
   # Validations
-  validates :user, uniqueness: { scope: :likeable, message: 'already liked' }
+  validates :user, uniqueness: { scope: :likeable }
 end
