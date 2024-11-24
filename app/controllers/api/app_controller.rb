@@ -3,7 +3,7 @@ module Api
     protect_from_forgery unless: -> { request.format.json? }
 
     rescue_from CanCan::AccessDenied do |e|
-      render json: { error: e.message }, status: :unauthorized
+      render json: { error: I18n.t('not_authorised') }, status: :unauthorized
     end
 
     include Pagy::Backend

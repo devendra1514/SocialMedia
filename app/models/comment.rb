@@ -12,23 +12,22 @@ class Comment < ApplicationRecord
   validates :title, presence: true
 
   # Callbacks
-  before_validation :check_and_set_level
+  before_validation :set_level_and_validate
 
   # Scopes
   default_scope { order(created_at: :desc) }
 
   private
 
-  def check_and_set_level
-    if commentable.is_a?(Post)
-      self.level = 0
-    elsif commentable.is_a?(Comment)
-      if commentable.level >= 1
-        errors.add(:base, "can't comment more than one")
-      else
-        lev = commentable.level
-        self.level = lev.nil? ? 0 : lev + 1
+  def set_level_and_validate
+    if commentable.is_a?(Comment)
+      lev = commentable.level
+      self.level = lev + 1
+      if self.level >= 2
+        errors.add(:base, :invalid_comment_level)
       end
+    else
+      self.level = 0
     end
   end
 end

@@ -38,7 +38,7 @@ class User < ApplicationRecord
   # Validations
   validates :name, presence: true
   validates :full_phone_number, uniqueness: true, phone: true
-  validates :username, uniqueness: { case_sensitive: false }, username: true
+  validates :username, uniqueness: { case_sensitive: false }, username: true, length: { in: 3..20 }
   validates :avatar, mime_type: { media_type: %w[image], max_size: 10.megabytes }, if: -> { avatar.attached? }
 
   # Callbacks

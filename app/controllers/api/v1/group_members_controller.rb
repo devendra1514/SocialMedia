@@ -36,7 +36,7 @@ module Api::V1
 
     def set_group_member
       @group_member = @group.group_memberships.find_by(user_id: params[:id])
-      render_not_found('Membership not found') unless @group_member
+      render_not_found(I18n.t('member.not_found')) unless @group_member
     end
   end
 end

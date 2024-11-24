@@ -14,7 +14,7 @@ class Group < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validates :username, uniqueness: { case_sensitive: false }, username: true
+  validates :username, uniqueness: { case_sensitive: false }, username: true, length: { in: 5..20 }
   validates :logo, mime_type: { media_type: 'image', max_size: 5.megabytes }, if: -> { logo.attached? }
 
   # Callbacks
@@ -27,7 +27,7 @@ class Group < ApplicationRecord
   private
 
   def set_username
-    self.username = SecureRandom.hex(10)
+    self.username ||= SecureRandom.hex(10)
   end
 
   def add_creator_as_member

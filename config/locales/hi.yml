@@ -1,0 +1,120 @@
+hi:
+  user:
+    not_found: 'खाता नहीं मिला'
+    created: 'खाता सफलतापूर्वक बनाया गया'
+  post:
+    not_found: 'पोस्ट नहीं मिली'
+    created: 'पोस्ट सफलतापूर्वक बनाई गई'
+  moment:
+    not_found: 'क्षण नहीं मिला'
+    created: 'क्षण सफलतापूर्वक बनाया गया'
+  comment:
+    not_found: 'टिप्पणी नहीं मिली'
+    created: 'टिप्पणी सफलतापूर्वक बनाई गई'
+  group:
+    not_found: 'समूह नहीं मिला'
+    created: 'समूह सफलतापूर्वक बनाया गया'
+  group_message:
+    not_found: 'संदेश नहीं मिला'
+    created: 'संदेश सफलतापूर्वक बनाया गया'
+  member:
+    not_found: 'सदस्य नहीं मिला'
+  message:
+    not_found: 'संदेश नहीं मिला'
+    created: 'संदेश सफलतापूर्वक बनाया गया'
+  removed: 'हटा दिया गया'
+  added: 'जोड़ा गया'
+  follow: 'अनुसरण करें'
+  unfollow: 'अनुसरण करना बंद करें'
+  like: 'पसंद किया गया'
+  dislike: 'नापसंद किया गया'
+  viewed: 'देखा गया'
+  already_viewed: 'पहले ही देखा जा चुका है'
+  not_authorised: 'आप अधिकृत नहीं हैं'
+  param_missing_or_invalid: 'पैरामीटर गायब है या अमान्य है'
+  account_verification_warning: 'खाता सत्यापित नहीं है, सत्यापित करने के लिए ओटीपी के साथ लॉगिन करें अन्यथा आपका खाता 24 घंटों में हटा दिया जाएगा'
+  password:
+    not_match: "पासवर्ड मेल नहीं खाते"
+    update_success: 'पासवर्ड सफलतापूर्वक अपडेट किया गया'
+  otp:
+    not_sent: 'ओटीपी नहीं भेजा गया'
+    code_expired: 'कोड की समय सीमा समाप्त हो गई है'
+    code_invalid: 'कोड अमान्य है'
+    send_success: 'ओटीपी सफलतापूर्वक भेजा गया'
+  jwt:
+    token_missing: 'प्रमाणित नहीं किया गया'
+    account_deleted: 'खाता हटा दिया गया है'
+    session_expired: 'सत्र समाप्त हो गया है'
+    invalid_token: 'अमान्य टोकन'
+    account_not_verified: 'खाता सत्यापित नहीं है, सत्यापित करने के लिए ओटीपी के साथ लॉगिन करें'
+  activerecord:
+    errors:
+      models:
+        view:
+          attributes:
+            user:
+              taken: 'पहले ही देखा जा चुका है'
+        otp:
+          attributes:
+            code:
+              blank: "आवश्यक है"
+              invalid: "सिर्फ नंबर होने चाहिए"
+            purpose:
+              inclusion: "वैध उद्देश्य नहीं है"
+        role:
+          attributes:
+            name:
+              blank: "खाली नहीं हो सकता"
+              taken: "पहले से मौजूद है"
+              inclusion: "मान्य भूमिका नहीं है"
+        user:
+          attributes:
+            full_phone_number:
+              taken: 'पहले से पंजीकृत है'
+            username:
+              taken: 'पहले से लिया गया है'
+              blank: "खाली नहीं हो सकता"
+              invalid: "सिर्फ छोटे अक्षर, नंबर, अंडरस्कोर, या डॉट होने चाहिए"
+              too_short: "कम से कम %{count} अक्षर लंबे होने चाहिए"
+              too_long: "अधिकतम %{count} अक्षर लंबे हो सकते हैं"
+            avatar:
+              file_type: "अमान्य फ़ाइल प्रकार। कृपया %{allowed_types} फ़ाइल अपलोड करें।"
+              file_size: "फ़ाइल का आकार %{size} MB से कम होना चाहिए।"
+        group:
+          attributes:
+            username:
+              too_short: 'कम से कम %{count} अक्षर लंबे होने चाहिए'
+              too_long: 'अधिकतम %{count} अक्षर लंबे हो सकते हैं'
+              taken: 'पहले से लिया गया है'
+              invalid: "सिर्फ छोटे अक्षर, नंबर, अंडरस्कोर, या डॉट होने चाहिए"
+            logo:
+              file_type: "अमान्य फ़ाइल प्रकार। कृपया %{allowed_types} फ़ाइल अपलोड करें।"
+              file_size: "फ़ाइल का आकार %{size} MB से कम होना चाहिए।"
+        post:
+          attributes:
+            media:
+              file_type: "अमान्य फ़ाइल प्रकार। कृपया %{allowed_types} फ़ाइल अपलोड करें।"
+              file_size: "फ़ाइल का आकार %{size} MB से कम होना चाहिए।"
+        moment:
+          attributes:
+            media:
+              file_type: "अमान्य फ़ाइल प्रकार। कृपया %{allowed_types} फ़ाइल अपलोड करें।"
+              file_size: "फ़ाइल का आकार %{size} MB से कम होना चाहिए।"
+        comment:
+          attributes:
+            base:
+              invalid_comment_level: "आप 1 स्तर से अधिक टिप्पणी नहीं कर सकते"
+        group_membership:
+          attributes:
+            member:
+              taken: 'पहले से ही इस समूह का हिस्सा है।'
+        like:
+          attributes:
+            user:
+              taken: 'पहले से पसंद किया गया है'
+        follow:
+          attributes:
+            follower:
+              taken: 'पहले से अनुसरण किया गया है'
+            base:
+              follow_yourself: "खुद का अनुसरण न करें"
