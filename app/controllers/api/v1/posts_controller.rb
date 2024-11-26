@@ -1,24 +1,20 @@
 module Api::V1
   class PostsController < Api::AppController
     before_action :set_post, only: %i[show update destroy]
+    authorize_resource
 
     def index
       case params[:post_type]
       when 'following_posts'
         posts = Post.where(user: current_user.followings)
-                  .includes(
+      else
+        posts = Post.unscoped
+        posts = posts.search(params[:q]).records if params[:q].present?
+      end
+      posts = posts.includes(
                     media_attachment: :blob,
                     user: [avatar_attachment: :blob]
                   )
-      else
-        posts = Post.unscoped
-                  .includes(
-                    media_attachment: [blob: [preview_image_attachment: :blob]],
-                    user: [avatar_attachment: :blob]
-                  )
-        posts = posts.search(params[:q]).records if params[:q].present?
-
-      end
       @pagy, @posts = pagy(posts)
     end
 
@@ -52,7 +48,6 @@ module Api::V1
     def set_post
       @post = Post.find_by(post_id: params[:id])
       return render_not_found(I18n.t('post.not_found')) unless @post.present?
-      authorize! action_name.to_sym, @post
     end
   end
 end

@@ -2,16 +2,18 @@ module Api::V1
   class DirectMessagesController < Api::AppController
     before_action :set_user, only: %i[index create update destroy]
     before_action :set_direct_message, only: %i[update destroy]
+    authorize_resource only: %i[update destroy]
 
     def conversations_user_list
-      @pagy, @users = pagy(
-        User.where(user_id: current_user.send_messages.select(:recipient_id))
-        .or(User.where(user_id: current_user.recieved_messages.select(:sender_id)))
-        .distinct)
+      users = User.where(user_id: current_user.send_messages.select(:recipient_id))
+                  .or(User.where(user_id: current_user.recieved_messages.select(:sender_id)))
+                  .distinct
+      @pagy, @users = pagy(users)
     end
 
     def index
-      @pagy, @messages = pagy(DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",current_user.user_id, @recipient.user_id, @recipient.user_id, current_user.user_id).includes([:sender]))
+      direct_messages = DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",current_user.user_id, @recipient.user_id, @recipient.user_id, current_user.user_id).includes([:sender])
+      @pagy, @messages = pagy(direct_messages)
     end
 
     def create
@@ -51,7 +53,6 @@ module Api::V1
     def set_direct_message
       @direct_message = DirectMessage.find_by(direct_message_id: params[:id])
       return render_not_found(I18n.t('message.not_found')) unless @direct_message
-      authorize! action_name.to_sym, @direct_message
     end
   end
 end

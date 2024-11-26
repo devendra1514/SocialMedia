@@ -23,9 +23,14 @@ Rails.application.routes.draw do
       resource :password, only: %i[create]
       resources :users, only: %i[index create show update destroy] do
         resources :direct_messages, only: %i[index create update destroy] do
-          collection do
-            get 'conversations_user_list'
-          end
+          # collection do
+          #   get 'conversations_user_list'
+          # end
+        end
+      end
+      resources :direct_messages, only: %i[] do
+        collection do
+          get 'conversations_user_list'
         end
       end
       resource :otp, only: %i[create]

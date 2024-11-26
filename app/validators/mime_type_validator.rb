@@ -9,7 +9,7 @@ class MimeTypeValidator < ActiveModel::EachValidator
       end
 
       if options[:max_size].present? && value.blob.byte_size > options[:max_size]
-        record.errors.add(attribute, :file_size, size: "#{options[:max_size]} MB.")
+        record.errors.add(attribute, :file_size, size: "#{options[:max_size] / 1.megabytes}")
       end
     end
   end

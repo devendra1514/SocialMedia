@@ -4,12 +4,14 @@ module Api::V1
     before_action :set_group_member, only: %i[destroy]
 
     def index
-      @pagy, @members = pagy(@group.members.includes([:avatar_attachment]))
+      authorize! :read_group_member, @group
+      members = @group.members.includes([:avatar_attachment])
+      @pagy, @members = pagy(members)
     end
 
     def create
+      authorize! :create_group_member, @group
       group_member = @group.group_memberships.new(group_member_params)
-      authorize! action_name.to_sym, group_member
       if group_member.save
         render json: { message: I18n.t('added') }
       else
@@ -18,7 +20,7 @@ module Api::V1
     end
 
     def destroy
-      authorize! action_name.to_sym, @group_member
+      authorize! :delete_group_member, @group
       @group_member.destroy
       render json: { message: I18n.t('removed') }
     end

@@ -1,25 +1,9 @@
-# lib/tasks/populate.rake
-
 namespace :db do
   desc "Populate database with large records"
   task populate: :environment do
     require 'faker'
 
     # Clear existing data
-    puts 'Destroying DirectMessages...'
-    DirectMessage.destroy_all
-    puts 'Destroying GroupMessages...'
-    GroupMessage.destroy_all
-    puts 'Destroying Follows...'
-    Follow.destroy_all
-    puts 'Destroying Groups...'
-    Group.destroy_all
-    puts 'Destroying Likes...'
-    Like.destroy_all
-    puts 'Destroying Comments...'
-    Comment.destroy_all
-    puts 'Destroying Posts...'
-    Post.destroy_all
     puts 'Destroying Users...'
     User.destroy_all
 
@@ -28,7 +12,7 @@ namespace :db do
 
     puts 'Creating Users...'
     users = []
-    10.times do
+    50.times do
       name = Faker::Name.name
       username = Faker::Internet.username(specifier: name, separators: %w(. _ ))
       user = User.new(
@@ -45,11 +29,11 @@ namespace :db do
     puts 'Creating Posts...'
     posts = []
     users.each do |user|
-      rand(5..10).times do
+      rand(1..5).times do
         post = Post.new(
           user: user,
           title: Faker::Quote.jack_handey,
-          created_at: (1..20).to_a.sample.days.ago
+          created_at: (0..10).to_a.sample.days.ago
         )
         posts << post if post.save
       end
@@ -59,21 +43,36 @@ namespace :db do
     puts 'Creating Comments...'
     comments = []
     posts.each do |post|
-      rand(2..10).times do
+      rand(1..3).times do
         comment = Comment.new(
           title: Faker::Quote.jack_handey,
           commentable: post,
           user: users.sample,
-          created_at: (1..20).to_a.sample.days.ago
+          created_at: (0..10).to_a.sample.days.ago
         )
         comments << comment if comment.save
       end
     end
 
 
+    puts 'Creating Comments of Comments...'
+    child_comments = []
+    comments.each do |post|
+      rand(1..2).times do
+        comment = Comment.new(
+          title: Faker::Quote.jack_handey,
+          commentable: post,
+          user: users.sample,
+          created_at: (0..10).to_a.sample.days.ago
+        )
+        child_comments << comment if comment.save
+      end
+    end
+
+
     puts 'Creating Likes for Posts...'
     posts.each do |post|
-      rand(1..2).times do
+      rand(1..25).times do
         like = Like.new(
           user: users.sample,
           likeable: post
@@ -85,7 +84,7 @@ namespace :db do
 
     puts 'Creating Likes for Comments...'
     comments.each do |comment|
-      rand(1..2).times do
+      rand(1..25).times do
         like = Like.new(
           user: users.sample,
           likeable: comment
@@ -110,12 +109,12 @@ namespace :db do
     puts 'Creating Groups...'
     groups = []
     users.each do |user|
-      rand(0..3).times do
+      rand(0..2).times do
         group = Group.new(
           name: Faker::Quote.singular_siegler,
           username: Faker::Internet.username,
           creator: user,
-          created_at: (1..20).to_a.sample.days.ago
+          created_at: (1..10).to_a.sample.days.ago
         )
         groups << group if group.save
       end
@@ -135,7 +134,7 @@ namespace :db do
 
 
     puts 'Creating Group Messages...'
-    50.times do
+    rand(1..10).times do
       message = GroupMessage.new(
         content: Faker::Quote.famous_last_words,
         sender: users.sample,
@@ -147,7 +146,7 @@ namespace :db do
 
 
     puts 'Creating Direct Messages...'
-    50.times do
+    rand(1..10).times do
       message = DirectMessage.new(
         content: Faker::Quote.famous_last_words,
         sender: users.sample,

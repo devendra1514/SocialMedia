@@ -2,14 +2,17 @@ module Api::V1
   class GroupMessagesController < Api::AppController
     before_action :set_group, only: %i[index create update destroy]
     before_action :set_group_message, only: %i[update destroy]
+    authorize_resource except: %i[index create]
 
     def index
-      @pagy, @messages = pagy(@group.messages.includes(:sender))
+      authorize! :read_group_message, @group
+      messages = @group.messages.includes(:sender)
+      @pagy, @messages = pagy(messages)
     end
 
     def create
+      authorize! :create_group_message, @group
       @group_message = @group.messages.new(group_message_params)
-      authorize! action_name.to_sym, @group_message
       if @group_message.save
       else
         render_unprocessable_entity(@group_message.errors)
@@ -45,7 +48,6 @@ module Api::V1
     def set_group_message
       @group_message = GroupMessage.find_by(group_message_id: params[:id])
       return render_not_found(I18n.t('message.not_found')) unless @group_message
-      authorize! action_name.to_sym, @group_message
     end
   end
 end
