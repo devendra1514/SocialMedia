@@ -1,9 +1,11 @@
 module Api::V1
   class GroupsController < Api::AppController
     before_action :set_group, only: %i[show update destroy]
+    authorize_resource
 
     def index
-      @pagy, @groups = pagy(current_user.groups.includes([:logo_attachment, creator: :avatar_attachment]))
+      joined_groups = current_user.groups.includes([:logo_attachment, creator: :avatar_attachment])
+      @pagy, @groups = pagy(joined_groups)
     end
 
     def create
@@ -40,7 +42,6 @@ module Api::V1
     def set_group
       @group = Group.find_by(group_id: params[:id])
       return render_not_found('Group not found') unless @group.present?
-      authorize! action_name.to_sym, @group
     end
   end
 end

@@ -9,7 +9,7 @@ module Api::V1
     end
 
     def posts
-      @pagy, @posts = pagy(@user.posts.includes([:user]))
+      @pagy, @posts = pagy(@user.posts.includes([:user, :media_attachment]))
     end
 
     def comments

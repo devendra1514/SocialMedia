@@ -10,5 +10,5 @@ class GroupMessage < ApplicationRecord
   validates :content, presence: true
 
   # Scopes
-  default_scope -> { order(created_at: :desc) }
+  default_scope -> { order(created_at: :asc) }
 end

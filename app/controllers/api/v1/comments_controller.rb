@@ -2,6 +2,7 @@ module Api::V1
   class CommentsController < Api::AppController
     before_action :set_parent_resource, only: %i[index create]
     before_action :set_comment, only: %i[show update destroy]
+    authorize_resource
 
     RESOURCE_CLASSESS = {
       'Post' => Post,
@@ -55,7 +56,6 @@ module Api::V1
     def set_comment
       @comment = Comment.find_by(comment_id: params[:id])
       return render_not_found(I18n.t('comment.not_found')) unless @comment.present?
-      authorize! action_name.to_sym, @comment
     end
   end
 end

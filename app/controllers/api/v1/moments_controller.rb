@@ -1,27 +1,21 @@
 module Api::V1
   class MomentsController < Api::AppController
     before_action :set_moment, only: %i[show update destroy]
+    authorize_resource
 
     def index
       case params[:moment_type]
       when 'following_moments'
-        posts = Moment.where(user: current_user.followings)
-                  .includes(
-                    media_attachment: [blob: :variant_records],
-                    user: [avatar_attachment: [blob: :variant_records]]
-                  )
-
-        @pagy, @moments = pagy(posts)
+        moments = Moment.where(user: current_user.followings)
       else
-        posts = Moment.unscoped
-                  .includes(
-                    media_attachment: [blob: [preview_image_attachment: :blob]],
+        moments = Moment.unscoped
+        moments = moments.search(params[:q]).records if params[:q].present?
+      end
+      momets = moments.includes(
+                    media_attachment: :blob,
                     user: [avatar_attachment: :blob]
                   )
-        posts = posts.search(params[:q]).records if params[:q].present?
-
-        @pagy, @moments = pagy(posts)
-      end
+      @pagy, @moments = pagy(moments)
     end
 
     def create
@@ -53,8 +47,7 @@ module Api::V1
 
     def set_moment
       @moment = Moment.find_by(moment_id: params[:id])
-      return render_not_found('Moment not found') unless @moment.present?
-      authorize! action_name.to_sym, @moment
+      return render_not_found(I18n.t('moment.not_found')) unless @moment.present?
     end
   end
 end
