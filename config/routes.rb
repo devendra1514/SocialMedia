@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
+  mount ActionCable.server => "/cable"
+
   root to: "api/welcomes#index"
 
   namespace :api do

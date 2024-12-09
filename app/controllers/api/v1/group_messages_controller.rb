@@ -6,14 +6,21 @@ module Api::V1
 
     def index
       authorize! :read_group_message, @group
-      messages = @group.messages.includes(:sender)
+      messages = @group.messages.includes(sender: :avatar_attachment)
       @pagy, @messages = pagy(messages)
+      @messages = @messages.reverse
     end
 
     def create
       authorize! :create_group_message, @group
       @group_message = @group.messages.new(group_message_params)
       if @group_message.save
+        data = ApplicationController.renderer.render(
+          template: 'api/v1/group_messages/_group_message',
+          locals: { group_message: @group_message }
+        )
+
+        BroadcastGroupMessageJob.new.perform(@group.group_id, data)
       else
         render_unprocessable_entity(@group_message.errors)
       end

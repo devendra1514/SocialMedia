@@ -3,7 +3,7 @@ json = {
     title: comment.title,
     likes_count: comment.likes_count,
     comments_count: comment.comments_count,
-    created_at: time_ago_in_words(comment.created_at) + ' ago',
+    created_at: get_time(comment.created_at),
     liked: comment.likes.exists?(user_id: current_user.user_id),
     level: comment.level
 }

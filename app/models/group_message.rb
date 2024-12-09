@@ -8,7 +8,14 @@ class GroupMessage < ApplicationRecord
 
   # Validations
   validates :content, presence: true
+  validate :validate_sender_as_member
 
   # Scopes
-  default_scope -> { order(created_at: :asc) }
+  default_scope -> { order(created_at: :desc) }
+
+  private
+
+  def validate_sender_as_member
+    (errors.add(:sender, :not_member) unless group.members.exists?(user_id: sender.user_id)) if sender.present?
+  end
 end

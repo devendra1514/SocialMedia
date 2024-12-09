@@ -12,7 +12,7 @@ namespace :db do
 
     puts 'Creating Users...'
     users = []
-    50.times do
+    500.times do
       name = Faker::Name.name
       username = Faker::Internet.username(specifier: name, separators: %w(. _ ))
       user = User.new(
@@ -111,7 +111,7 @@ namespace :db do
     users.each do |user|
       rand(0..2).times do
         group = Group.new(
-          name: Faker::Quote.singular_siegler,
+          name: Faker::Company.name,
           username: Faker::Internet.username,
           creator: user,
           created_at: (1..10).to_a.sample.days.ago

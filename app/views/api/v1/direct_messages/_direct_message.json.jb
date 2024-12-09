@@ -1,7 +1,7 @@
 json = {
     direct_message_id: direct_message.direct_message_id,
     content: direct_message.content,
-    created_at: time_ago_in_words(direct_message.created_at) + ' ago',
+    created_at: get_time(direct_message.created_at, type: 'time'),
 }
 
 json[:sender] = render partial: 'api/v1/users/user', locals: { user: direct_message.sender }
