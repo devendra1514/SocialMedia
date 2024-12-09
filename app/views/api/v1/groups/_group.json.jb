@@ -2,9 +2,10 @@ json = {
     group_id: group.group_id,
     name: group.name,
     username: group.username,
-    created_at: group.created_at,
+    created_at: get_time(group.created_at),
     logo_url: ActiveStorageUrlService.new(group.logo).url,
-    thumb_url: ActiveStorageUrlService.new(group.logo).thumb_url
+    thumb_url: ActiveStorageUrlService.new(group.logo).thumb_url,
+    last_message: (render partial: 'api/v1/group_messages/group_message', locals: { group_message: group.messages.last } if group.messages.last)
 }
 
 json[:creator] = render partial: 'api/v1/users/user', locals: { user: group.creator }

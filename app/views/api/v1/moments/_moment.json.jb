@@ -4,7 +4,7 @@ json = {
     likes_count: moment.likes_count,
     comments_count: moment.comments_count,
     views_count: moment.views_count,
-    created_at: time_ago_in_words(moment.created_at) + ' ago',
+    created_at: get_time(moment.created_at),
     liked: moment.likes.exists?(user_id: current_user.user_id),
     media_url: ActiveStorageUrlService.new(moment.media).url,
     thumb_url: ActiveStorageUrlService.new(moment.media).thumb_url

@@ -8,17 +8,23 @@ module Api::V1
       users = User.where(user_id: current_user.send_messages.select(:recipient_id))
                   .or(User.where(user_id: current_user.recieved_messages.select(:sender_id)))
                   .distinct
-      @pagy, @users = pagy(users)
+      @pagy, @users = pagy(users.includes(:avatar_attachment))
     end
 
     def index
       direct_messages = DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",current_user.user_id, @recipient.user_id, @recipient.user_id, current_user.user_id).includes([:sender])
       @pagy, @messages = pagy(direct_messages)
+      @messages = @messages.reverse
     end
 
     def create
       @direct_message = DirectMessage.new(create_direct_message_params)
       if @direct_message.save
+        data = ApplicationController.renderer.render(
+          template: 'api/v1/direct_messages/_direct_message',
+          locals: { direct_message: @direct_message }
+        )
+        BroadcastDirectMessageJob.new.perform(current_user.user_id, data)
       else
         render_unprocessable_entity(@direct_message.errors)
       end

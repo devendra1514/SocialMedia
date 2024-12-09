@@ -4,6 +4,15 @@ json[:users] = @users.map do |user|
   render partial: 'api/v1/users/user', locals: { user: user }
 end
 
+
+json[:users].each_with_index do |user_data, index|
+  direct_message = DirectMessage.where("(sender_id = ? AND recipient_id = ?) OR (sender_id = ? AND recipient_id = ?)",
+    current_user.user_id, user_data[:user_id], user_data[:user_id], current_user.user_id).last
+
+
+  user_data[:last_message] = (render partial: 'api/v1/direct_messages/direct_message', locals: { direct_message: direct_message } if direct_message)
+end
+
 json[:pagination] = {
   current_page: @pagy.page,
   next_page: @pagy.next,

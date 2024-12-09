@@ -118,3 +118,7 @@ en:
               taken: 'already followed'
             base:
               follow_yourself: "Don't follow yourself"
+        group_message:
+          attributes:
+            sender:
+              not_member: 'is not a member of this group'

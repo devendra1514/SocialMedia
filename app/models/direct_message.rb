@@ -10,5 +10,5 @@ class DirectMessage < ApplicationRecord
   validates :content, presence: true
 
   # Scopes
-  default_scope -> { order(created_at: :asc) }
+  default_scope -> { order(created_at: :desc) }
 end
